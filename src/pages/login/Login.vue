@@ -42,6 +42,7 @@ export default {
             }, 2000)
         },
         login () {
+            let phone = this.phone
 
         }
     }

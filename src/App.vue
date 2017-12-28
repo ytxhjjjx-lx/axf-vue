@@ -1,6 +1,9 @@
 <template>
     <div id="app">
-        <router-view></router-view>
+        <!-- 缓存 -->
+        <keep-alive>
+            <router-view></router-view>
+        </keep-alive>
         <tab-bar />
     </div>
 </template>
@@ -11,6 +14,8 @@ import api from 'common/api'
 export default {
     name: 'app',
     created () {
+        //加载提示框
+        this.$indicate.open('加载中...')
         let that = this
         async function getAllData() {
             let categories = await that.$http.get(api.host + '/categories')
@@ -19,6 +24,8 @@ export default {
             that.productsData = products.data
             // console.log(that.categories)
             that.classifyProducts()
+            //数据重组完毕后关闭加载提示框
+            that.$indicate.close()
         }
         getAllData()
     },  

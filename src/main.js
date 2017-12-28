@@ -9,11 +9,14 @@ import 'common/styles/index.less'
 import 'common/styles/reset.js'
 //引入路由文件
 import router from './router'
-//引入mint-ui
-import { Swipe, SwipeItem, Lazyload } from 'mint-ui'
+/* 引入mint-ui */
+import { Swipe, SwipeItem, Lazyload, Indicator } from 'mint-ui'
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.use(Lazyload)
+//加载提示框
+Vue.prototype.$indicate = Indicator
+
 
 // 引入axios
 import axios from 'axios'

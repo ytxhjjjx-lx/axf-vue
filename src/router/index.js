@@ -5,6 +5,8 @@ const Home = resolve => require(['pages/home/Home.vue'], resolve)
 const Flashsend = resolve => require(['pages/flashsend/Flashsend.vue'], resolve)
 const Cart = resolve => require(['pages/cart/Cart.vue'], resolve)
 const Mine = resolve => require(['pages/mine/Mine.vue'], resolve)
+//登录,注册页
+const Login = resolve => require(['pages/login/Login.vue'], resolve)
 
 
 Vue.use(Router)
@@ -26,6 +28,10 @@ export default new Router({
         {
             path: '/mine',
             component: Mine
+        },
+        {
+            path: '/login',
+            component: Login
         }
     ]
 })

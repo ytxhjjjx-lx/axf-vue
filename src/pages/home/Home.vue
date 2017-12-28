@@ -63,6 +63,7 @@ export default {
         }
     },
     computed: {
+        //提取重组后的分类数据
         categories () {
             return this.$store.state.categories
         }

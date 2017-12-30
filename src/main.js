@@ -10,12 +10,14 @@ import 'common/styles/reset.js'
 //引入路由文件
 import router from './router'
 /* 引入mint-ui */
-import { Swipe, SwipeItem, Lazyload, Indicator } from 'mint-ui'
+import { Swipe, SwipeItem, Lazyload, Indicator, MessageBox } from 'mint-ui'
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.use(Lazyload)
 //加载提示框
 Vue.prototype.$indicate = Indicator
+//消息弹出
+Vue.prototype.$msg = MessageBox
 
 
 // 引入axios

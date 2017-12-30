@@ -34,7 +34,7 @@
                                         <p class="price">￥{{pro.price}}<span></span></p>
                                     </div>
                                     <div class="btm_right">
-                                        <span> + </span>
+                                        <span @click.stop="addProduct(pro)"> + </span>
                                     </div>
                                 </div>
                             </div>
@@ -66,6 +66,27 @@ export default {
         //提取重组后的分类数据
         categories () {
             return this.$store.state.categories
+        },
+        userInfo () {
+            return this.$store.state.userInfo
+        }
+    },
+    methods: {
+        addProduct (pro) {
+            //已登录
+            if (this.userInfo.id) {
+                this.$store.dispatch('addProduct', pro)
+                    .then(res => {
+                        pro.num++
+                        this.$msg('提示', res.msg)
+                    })
+            } else {
+                //还未登录
+                this.$msg('提示', '请先登录!')
+                    .then(action => {
+                        this.$router.push('/login')
+                    })
+            }
         }
     },
     components: {

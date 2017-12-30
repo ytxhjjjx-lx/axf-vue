@@ -42,7 +42,7 @@ var data = new Mock.mock({
     ],
     'products|300-400': [
         {
-            'product_id|+1': 1,
+            'id|+1': 1,
             'categoryId|1-10': 10,
             'cidIndex|0-3': 10,
             // 商品的图片
@@ -57,9 +57,15 @@ var data = new Mock.mock({
             // 商品的品牌
             'brand': '@cword(2, 4)',
             // 保质期
-            'expiration_date|1-3.1': 10
+            'expiration_date|1-3.1': 10,
+            // 数量
+            'num': 0,
+            // 商品详情
+            'details': '@cparagraph()'
         }
-    ]
+    ],
+    'users': [],
+    'carts': []
 })
 
 fs.writeFile('db.json', JSON.stringify(data, null, 2), function () {

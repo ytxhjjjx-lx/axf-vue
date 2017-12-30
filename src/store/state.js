@@ -1,3 +1,5 @@
 export default {
-    categories: [{ cids: [], products: []}]
+    categories: [{ cids: [], products: []}],
+    carts: [],
+    userInfo: {}
 }

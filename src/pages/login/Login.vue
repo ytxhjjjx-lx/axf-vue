@@ -43,7 +43,22 @@ export default {
         },
         login () {
             let phone = this.phone
-
+            let reg = /^1[34578]\d{9}$/g
+            if (reg.test(phone)) {
+                let userObj = {
+                    phone: phone
+                }
+                this.$store.dispatch('login', userObj)
+                    .then(res => {
+                        return this.$msg('提示', res.msg)
+                    })
+                    .then(res => {
+                        // 登陆成功,注册成功都会跳转到首页
+                        this.$router.push('/')
+                    })
+            } else {
+                this.$msg('提示', '手机号格式错误')
+            }
         }
     }
 }

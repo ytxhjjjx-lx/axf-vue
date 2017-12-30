@@ -64,9 +64,9 @@
                                     <p class="price ">￥{{item.price}}</p>
                                 </div>
                                 <div class="right ">
-                                    <span v-show="item.num > 0"> - </span>
-                                    <span class="num" v-show="item.num > 0">{{item.num}}}</span>
-                                    <span> + </span>
+                                    <span v-show="item.num > 0" @click.stop="subProduct(item)"> - </span>
+                                    <span class="num" v-show="item.num > 0">{{item.num}}</span>
+                                    <span @click.stop="addProduct(item)"> + </span>
                                 </div>
                             </div>
                         </div>
@@ -137,6 +137,9 @@ export default {
                 //升序
                 return result.sort((a, b) =>  Number(b.price) - Number(a.price))
             }
+        },
+        userInfo () {
+            return this.$store.state.userInfo
         }
     },
     methods: {
@@ -189,6 +192,42 @@ export default {
         //隐藏筛选内容
         hideFilterItems () {
             this.click = this.click1 = false
+        },
+        //添加商品
+        addProduct (pro) {
+            //已登录
+            if (this.userInfo.id) {
+                this.$store.dispatch('addProduct', pro)
+                    .then(res => {
+                        this.$msg('提示', res.msg)
+                        pro.num++
+                    })
+            } else {
+                //还未登录
+                this.$msg('提示', '请先登录!')
+                    .then(action => {
+                        this.$router.push('/login')
+                    })
+            }
+        },
+        //减少商品
+        subProduct (pro) {
+            //已登录
+            if (this.userInfo.id) {
+                if (pro.num > 0) {
+                    this.$store.dispatch('subProduct', pro)
+                        .then(res => {
+                            this.$msg('提示', res.msg)
+                            pro.num--
+                        })
+                }
+            } else {
+                //还未登录
+                this.$msg('提示', '请先登录!')
+                    .then(action => {
+                        this.$router.push('/login')
+                    })
+            }
         }
     }
 }

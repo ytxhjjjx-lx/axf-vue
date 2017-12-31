@@ -132,6 +132,76 @@ export default {
                     return { "msg": "删除商品成功" }
                 })
         }
+    },
+    // 更改购物车中商品的选中状态
+    changeChecked (store, product) {
+        // 更新数据库中的商品的状态
+        http.patch(api.host + '/carts/' + product.id, {
+                checked: !product.checked
+            })
+            .then(res => {
+                if (res.data.id > 0) {
+                // 更新本地购物车状态
+                    store.commit('CHANGE_CHECKED', product)
+                } 
+            })
+    },
+    //全部取消
+    checkedAllFalse (store) {
+        let carts = store.state.carts
+        let num = 0
+        async function change() {
+            let sum = await changeFalse()
+            // console.log(sum)
+            //更改本地勾选状态
+            store.commit('CHECKED_ALL_FALSE')
+        }
+        function changeFalse () {
+            return new Promise(function (resolve, reject) {
+                for (let i = 0; i < carts.length; i++) {
+                    http.patch(api.host + '/carts/' + carts[i].id, {
+                        checked: false
+                    })
+                    .then(res => {
+                        if(res.data.id > 0) {
+                            num++
+                            if (num === carts.length) {
+                                resolve(num)
+                            }
+                        }
+                    })
+                }
+            })
+        }
+        change()
+    },  
+    //全部勾选
+    checkedAllTrue (store) {
+        let carts = store.state.carts
+        let num = 0
+        async function change() {
+            let sum = await changeTrue()
+            // console.log(sum)
+            //更改本地勾选状态
+            store.commit('CHECKED_ALL_TRUE')
+        }
+        function changeTrue () {
+            return new Promise(function (resolve, reject) {
+                for (let i = 0; i < carts.length; i++) {
+                    http.patch(api.host + '/carts/' + carts[i].id, {
+                        checked: true
+                    })
+                    .then(res => {
+                        if(res.data.id > 0) {
+                            num++
+                            if (num === carts.length) {
+                                resolve(num)
+                            }
+                        }
+                    })
+                }
+            })
+        }
+        change()
     }
-
 }

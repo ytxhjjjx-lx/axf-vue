@@ -6593,7 +6593,7 @@
       "product_name": "交如府支",
       "product_price": 91.5,
       "checked": true,
-      "num": 2,
+      "num": 4,
       "id": 1
     },
     {
@@ -6602,8 +6602,8 @@
       "product_img": "http://dummyimage.com/80x80/f2d179&text=李霞",
       "product_name": "应治意但法最次方世种",
       "product_price": 58.3,
-      "checked": true,
-      "num": 4,
+      "checked": false,
+      "num": 3,
       "id": 2
     },
     {
@@ -6652,8 +6652,8 @@
       "product_img": "http://dummyimage.com/80x80/f2c579&text=苏芳",
       "product_name": "指机流思素片出",
       "product_price": 89.5,
-      "checked": true,
-      "num": 3,
+      "checked": false,
+      "num": 6,
       "id": 8
     }
   ]

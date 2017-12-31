@@ -66,7 +66,8 @@
                     <!-- 商品列表 -->
                     <table width="100%">
                         <tr class="pro_item" v-for="(item, index) in carts" :key="item.id">
-                            <td class="group-item-checkbox" :class="{'active': item.checked}">&nbsp;</td>
+                            <td class="group-item-checkbox" :class="{'active': item.checked}"
+                            @click="changeChecked(item)">&nbsp;</td>
                             <td class="group-item-img">
                                 <img v-lazy="item.product_img">
                             </td>
@@ -87,8 +88,9 @@
                     </table>
                     <!-- 底部 -->
                      <div class="group-footer">
-                        <span class="selectAll" >全选</span>
-                        共：<span class="redfont">￥100</span>
+                        <span class="selectAll" :class="{'selectAll-true': checkedAll, 
+                        'selectAll-false': !checkedAll}" @click="changeCheckedAll">全选</span>
+                        共：<span class="redfont">￥{{total}}</span>
                         <span class="group-btn">选好了</span>
                     </div>
                 </div>
@@ -111,6 +113,22 @@ export default {
         userInfo () {
             return this.$store.state.userInfo
         },
+        // 返回全选按钮的bol值
+        checkedAll () {
+            // 假设都是勾选的
+            let checkedAll = true
+            for (let i = 0; i < this.carts.length; i++) {
+                if (!this.carts[i].checked) {
+                    checkedAll = false
+                    break
+                }
+            }
+            return checkedAll
+        },
+        // 总价
+        total () {
+            return this.$store.getters.total
+        },
     },
     methods: {
         subProduct (pro) {
@@ -130,6 +148,20 @@ export default {
                     this.$msg('提示', res.msg)
                     // this.$store.commit('RESET_CARTS', product)
                 })
+        },
+        // 更改购物车商品的勾选状态
+        changeChecked (product) {
+            this.$store.dispatch('changeChecked', product)
+        },
+        //更换全选状态
+        changeCheckedAll () { 
+            if (this.checkedAll) {
+                // 全部取消
+                this.$store.dispatch('checkedAllFalse') 
+            } else {
+                // 全部勾选
+                this.$store.dispatch('checkedAllTrue')
+            }
         }
     }
 }
@@ -321,12 +353,12 @@ export default {
         background-size: 1.8rem 1.8rem;
         background-repeat: no-repeat;
         background-position: left center;
-    }
-    &.selectAll-false{
-        background-image: url("./images/checkbox.png");
-    }
-    &.selectAll-true{
-        background-image: url("./images/checkbox.png");
+        &.selectAll-false{
+            background-image: url("./images/checkbox.png");
+        }
+        &.selectAll-true{
+            background-image: url("./images/checkbox-selectd.png");
+        }
     }
     .group-btn{
         height: 100%;

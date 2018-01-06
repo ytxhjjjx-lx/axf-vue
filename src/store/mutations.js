@@ -23,6 +23,9 @@ export default {
         }
         // console.log(state.categories)
     },
+    SAVE_SITES (state, sites) {
+        state.sites = sites
+    },
     ADD_PRODUCT (state, product) {
         state.carts.push(product)
     },
@@ -47,8 +50,16 @@ export default {
         }
     },
     // 重置数量
-    RESET_CARTS () {
-        
+    RESET_CARTS (state, product) {
+        label:
+        for (let i=0; i<state.categories.length; i++) {
+            for (let j=0; j<state.categories[i].products.length; j++) {
+                if (state.categories[i].products[j].id === product.product_id) {
+                    state.categories[i].products[j].num = product.num
+                    break label
+                }
+            }
+        }
     },
     CHANGE_CHECKED (state, product) {
         product.checked = !product.checked
@@ -67,4 +78,45 @@ export default {
             carts[i].checked = true
         }
     },
+    CART_POS (state, pos) {
+        state.cartPos = pos
+    },
+    //所选城市
+    CHANGE_SELECTED_CITY (state, city) {
+        state.selectedCity = city
+    },
+    //所选地址
+    SAVE_SELECTED_SITE (state, site) {
+        if (site === '') {
+            state.selectedSite = site
+        } else {
+            state.selectedSite = site.name
+            state.selectedX = site.location.lng
+            state.selectedY = site.location.lat
+        }
+    },
+    //所选地址名称
+    SAVE_SELECTED_SITENAME (state, name) {
+        state.selectedSite = name
+    },
+    SAVE_SITE (state, site) {
+        state.sites.push(site)
+    },
+    UPDATE_USER (state, data) {
+        state.userInfo = data
+    },
+    UPDATE_SITE (state, site) {
+        for (let i = 0; i < state.sites.length; i++) {
+            if (state.sites[i].id === site.id) {
+                state.sites[i] = site
+            }
+        }
+    }
+    /* DELETE_SITE (state, id) {
+        for (let i=0; i<state.sites.length; i++) {
+            if (state.sites[i].id === id) {
+                state.sites.splice(i, 1)
+            }
+        }
+    } */
 }

@@ -19,10 +19,11 @@
                     </h3>
                     <div class="category_item_img"><img v-lazy="item.category_img" alt=""></div>
                     <ul class="category_item_goodsList">
-                        <li v-for="(pro, index) in item.products" :key="pro.id" v-if="index < 3">
+                        <router-link tag="li" v-for="(pro, index) in item.products" :key="pro.id" 
+                        v-if="index < 3" :to="'/product-item/' + pro.id">
                             <div class="product_image">
                                 <!-- ref获取dom元素 -->
-                                <img v-lazy="pro.imgs.min" alt="">
+                                <img v-lazy="pro.imgs.min" alt="" :ref="'homeProImg' + pro.id">
                             </div>
                             <div class="Product_details">
                                 <div class="top">
@@ -38,7 +39,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
+                        </router-link>
                     </ul>
                 </div>
             </div>
@@ -78,7 +79,24 @@ export default {
                 this.$store.dispatch('addProduct', pro)
                     .then(res => {
                         pro.num++
-                        this.$msg('提示', res.msg)
+                        //点击图片的位置信息
+                        let pos = this.$refs['homeProImg' + pro.id][0].getBoundingClientRect()
+                        //购物车数量标志的位置信息
+                        let cartPos = this.$store.state.cartPos
+                        let obj = {
+                            src: pro.imgs.min,
+                            width: pos.width,
+                            height: pos.height,
+                            start: {
+                                left: pos.left,
+                                top: pos.top
+                            },
+                            end: {
+                                left: cartPos.left,
+                                top: cartPos.top
+                            }
+                        }
+                        this.$addProduct(obj)
                     })
             } else {
                 //还未登录

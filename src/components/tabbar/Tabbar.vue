@@ -9,6 +9,9 @@
             闪送超市
         </router-link>
         <router-link to="/cart" class="cart" ref="cartEl">
+            <var v-if="cartCounts > 0" :class="{'active': tabBarActive}">
+                {{cartCounts}}
+            </var>
             <span></span>
             购物车
         </router-link>
@@ -18,6 +21,36 @@
         </router-link>
     </div>
 </template>
+
+<script>
+export default {
+    data () {
+        return {
+            tabBarActive: false
+        }
+    },
+    mounted() {
+        //获取数量标签位置信息
+        let cartPos = this.$refs.cartEl.$el.getBoundingClientRect()
+        this.$store.commit('CART_POS', cartPos)
+    },
+    computed: {
+        cartCounts () {
+            return this.$store.getters.cartCounts
+        }
+    },
+    watch : {
+        //监听cartCounts的变化
+        cartCounts () {
+            this.tabBarActive = true
+            setTimeout(() => {
+                this.tabBarActive = false
+            }, 300) 
+        }
+    }
+}
+</script>
+
 
 <style lang="less" scoped>
 .tabbar {
@@ -82,6 +115,24 @@
         &.router-link-exact-active {
             span {
                 background-image: url("./img/cart-active.png");
+            }
+        }
+        >var{
+            position: absolute;
+            right: 1rem;
+            top: 0.5rem;
+            background-color: #f40;
+            color: #fff;
+            line-height: 2rem;
+            height: 2rem;
+            width: 2rem;
+            text-align: center;
+            font-size: 1rem;
+            border-radius: 50%;
+            transform: scale(1);
+            transition: all 0.3s cubic-bezier(0.28,-0.42, 0.37, 1.55);
+            &.active{
+                transform: scale(1.3)
             }
         }
     }

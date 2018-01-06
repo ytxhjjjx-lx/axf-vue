@@ -10,6 +10,18 @@ import 'common/styles/index.less'
 import 'common/styles/reset.js'
 //引入路由文件
 import router from './router'
+//控制tabbar显示隐藏(导航守卫)
+router.beforeEach((to, from, next) => {
+    let path = to.path
+    if (path === '/' || path === '/flashsend' || path === '/cart' || path === '/mine') {
+        store.state.tabBarShow = true
+    } else {
+        store.state.tabBarShow = false
+    }
+    next()
+})
+
+
 /* 引入mint-ui */
 import { Swipe, SwipeItem, Lazyload, Indicator, MessageBox } from 'mint-ui'
 Vue.component(Swipe.name, Swipe)
@@ -19,6 +31,9 @@ Vue.use(Lazyload)
 Vue.prototype.$indicate = Indicator
 //消息弹出
 Vue.prototype.$msg = MessageBox
+//引入自定义插件
+import addProduct from '@/plugins'
+Vue.use(addProduct)
 
 
 // 引入axios

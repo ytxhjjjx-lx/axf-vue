@@ -6,20 +6,24 @@
             <table class="receive" width="100%">
                 <tr>
                     <th width="28%">
-                        收<span class="text-hidden"></span>货<span class="text-hidden"></span>人
+                        收<span class="text-hidden">a</span>货<span class="text-hidden">a</span>人
                     </th>
-                    <td>唐菜也 先生</td>
-                    <td width="17%"  rowspan="3" class="more extend-click">修改</td>
+                    <td>{{userInfo.selectedSite.linkman}} {{userInfo.selectedSite.sex === 0 ? '先生': '女士'}}</td>
+                    <td width="17%"  rowspan="3" class="more extend-click" @click="goToSite">
+                    修改
+                    </td>
                 </tr>
                 <tr>
                     <th>
-                        电<span class="text-hidden"></span><span class="text-hidden"></span>话
+                        电<span class="text-hidden">中</span><span class="text-hidden">中</span>话
                     </th>
-                    <td>18600805498</td>
+                    <td>{{userInfo.selectedSite.phone}}</td>
                 </tr>
                 <tr>
                     <th>收货地址</th>
-                    <td>深圳市 裕安居1510</td>
+                    <td>{{userInfo.selectedSite.city}} {{userInfo.selectedSite.site}}
+                    {{userInfo.selectedSite.detailSite}}
+                    </td>
                 </tr>
             </table>
             <!-- 购物车信息 -->
@@ -65,14 +69,15 @@
                     </div>
                     <!-- 商品列表 -->
                     <table width="100%">
-                        <tr class="pro_item" v-for="(item, index) in carts" :key="item.id">
+                        <router-link tag="tr" class="pro_item" v-for="(item, index) in carts" :key="item.id"
+                        :to="'/product-item/' + item.product_id">
                             <td class="group-item-checkbox" :class="{'active': item.checked}"
-                            @click="changeChecked(item)">&nbsp;</td>
+                            @click.stop="changeChecked(item)">&nbsp;</td>
                             <td class="group-item-img">
                                 <img v-lazy="item.product_img">
                             </td>
                             <td class="group-item-detail">
-                                <div>{{item.product_name}}</div>
+                                <div class="name">{{item.product_name}}</div>
                                 <div class="product-specifics-wrap">
                                     <div class="product-specifics">
                                         <span>￥{{item.product_price}}</span>
@@ -84,7 +89,7 @@
                                     </div>
                                 </div>
                             </td>
-                        </tr>
+                        </router-link>
                     </table>
                     <!-- 底部 -->
                      <div class="group-footer">
@@ -102,13 +107,33 @@
 <script>
 import HeaderGray from '@/components/header-gray/Header-gray'
 export default {
+    activated () {
+        if (!this.userInfo.id) {
+            this.$msg('提示', '请先登录!')
+                .then(res => {
+                    this.$router.push('/login')
+                })
+        } else {
+            //判断是否有地址
+            if (!(this.sites.length > 0)) {
+                this.$msg('提示', '请先选择地址')
+                    .then(res => {
+                        this.$router.push('/site')
+                    })
+            }
+        }
+    },
     components: {
         HeaderGray
     },
     computed: {
-        // 本地购物车
+        // 购物车
         carts () {
             return this.$store.state.carts
+        },
+        //地址
+        sites () {
+            return this.$store.state.sites
         },
         userInfo () {
             return this.$store.state.userInfo
@@ -128,7 +153,7 @@ export default {
         // 总价
         total () {
             return this.$store.getters.total
-        },
+        }
     },
     methods: {
         subProduct (pro) {
@@ -136,8 +161,8 @@ export default {
             pro.cartBol = true
             this.$store.dispatch('subProduct', pro)
                 .then(res => { 
-                    this.$msg('提示', res.msg)
-                    // this.$store.commit('RESET_CARTS', product)
+                    //重置原始商品数据
+                    this.$store.commit('RESET_CARTS', pro)
                 })
         },
         addProduct (pro) {
@@ -145,8 +170,7 @@ export default {
             pro.cartBol = true
             this.$store.dispatch('addProduct', pro)
                 .then(res => { 
-                    this.$msg('提示', res.msg)
-                    // this.$store.commit('RESET_CARTS', product)
+                    this.$store.commit('RESET_CARTS', pro)
                 })
         },
         // 更改购物车商品的勾选状态
@@ -162,6 +186,9 @@ export default {
                 // 全部勾选
                 this.$store.dispatch('checkedAllTrue')
             }
+        },
+        goToSite () {
+            this.$router.push('/site')
         }
     }
 }
@@ -181,6 +208,13 @@ export default {
     th{
         padding: .7rem 1rem .7rem 1.5rem;
         text-align: left;
+    }
+    .text-hidden{
+        visibility: hidden;
+    }
+    .more {
+        background: url("./images/cart-more.png") right center no-repeat;
+        background-size: auto 1rem;
     }
 }
 .cart-group{
@@ -296,6 +330,9 @@ export default {
             height: 4rem;
             line-height: 4rem;
             padding-left: 1.5rem;
+        }
+        .name {
+            font-size: 1.3rem;
         }
         .product-specifics-wrap{
             overflow: hidden;

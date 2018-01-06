@@ -12,7 +12,12 @@ export default {
                             .then(res => {
                                 commit('SAVE_CARTS', res.data)
                             })
-                        // 登陆成功，保存用户信息
+                        //提取该用户送货地址数据
+                        http.get(api.host + '/users/' + res.data[0].id + '/sites')
+                            .then(res => {
+                                commit('SAVE_SITES', res.data)
+                            })
+                        // 保存用户个人信息
                         commit('LOGIN', res.data[0])
                         return {"msg": "登陆成功"} 
                     } else {
@@ -43,7 +48,7 @@ export default {
                         // 更改成功
                         if (res.data.id > 0) {
                             store.commit('UPDATE_NUM', product)
-                            return { "msg": "更新数量成功" }
+                            // return { "msg": "更新数量成功" }
                         }
                     })
           }
@@ -68,7 +73,6 @@ export default {
                         if (res.data.id) {
                             //直接传入vuex中的对象
                             store.commit('UPDATE_NUM', carts[i])
-                            return {"msg": "更新数量成功"}
                         }
                     })
             }
@@ -120,7 +124,6 @@ export default {
                     if (res.data.id) {
                         //直接传入vuex中的对象
                         store.commit('SUB_PRODUCT', res.data.id)
-                        return {"msg": "减少数量成功"}
                     }
                 })
         } else {
@@ -129,7 +132,6 @@ export default {
                 .then(res => {
                     // 先从本地购物车删除该商品
                     store.commit('DELETE', productId)
-                    return { "msg": "删除商品成功" }
                 })
         }
     },
@@ -203,5 +205,49 @@ export default {
             })
         }
         change()
+    },
+    //保存地址
+    saveSite (store, site) {
+        return http.post(api.host + '/sites', site)
+                .then(res => {
+                    if(res.data.id) {
+                        store.commit('SAVE_SITE', res.data)
+                        http.patch(api.host + '/users/' + store.state.userInfo.id, {
+                            selectedSite: res.data
+                        })
+                        .then(res => {
+                            // 更新user对象
+                            store.commit('UPDATE_USER', res.data)
+                        })
+                        return {'msg': '保存成功'}
+                    }
+                })
+    },
+    changeSelectedSite (store, site) {
+        http.patch(api.host + '/users/' + store.state.userInfo.id, {
+            selectedSite: site
+        })
+        .then(res => {
+            if (res.data.id > 0){ 
+                store.commit('UPDATE_USER', res.data)
+            }
+        })
+    },
+    updateSite (store, site) {
+        http.put(api.host + '/sites/' + site.id, site)
+            .then(res => {
+                if (res.data.id > 0) {
+                    store.commit('UPDATE_SITE', res.data)
+                }
+            })
     }
+    /* //删除地址
+    deleteSite (store, id) {
+        return http.delete(api.host + '/sites/' + id)
+            .then(res => {
+                 //console.log(res.data)  , 返回当前对象id
+                store.commit('DELETE_SITE', res.data)
+                return {'msg': '删除成功'}
+            })
+    } */
 }

@@ -4,7 +4,7 @@
         <keep-alive>
             <router-view></router-view>
         </keep-alive>
-        <tab-bar />
+        <tab-bar v-show="tabBarShow"/>
     </div>
 </template>
 
@@ -17,12 +17,12 @@ export default {
         //加载提示框
         this.$indicate.open('加载中...')
         let that = this
+        //app中获取数据, 避免多次请求
         async function getAllData() {
             let categories = await that.$http.get(api.host + '/categories')
             that.categoriesData = categories.data
             let products = await that.$http.get(api.host + '/products')
             that.productsData = products.data
-            // console.log(that.categories)
             that.classifyProducts()
             //数据重组完毕后关闭加载提示框
             that.$indicate.close()
@@ -49,6 +49,11 @@ export default {
                 }
             }
             this.$store.commit('SAVE_CATEGORIES', this.categoriesData)
+        }
+    },
+    computed: {
+        tabBarShow () {
+            return this.$store.state.tabBarShow
         }
     }
 }

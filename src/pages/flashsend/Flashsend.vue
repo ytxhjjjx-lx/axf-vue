@@ -51,10 +51,10 @@
                 </div>
                 <!-- 产品列表 -->
                 <div class="productItems">
-                    <div class="productItem" v-for="(item, index) in filterProducts" 
-                    :key="item.product_id">
+                    <router-link tag="div" :to="'/product-item/' + item.id" class="productItem" v-for="(item, index) in filterProducts" 
+                    :key="item.id">
                         <div class="ProductImg">
-                            <img v-lazy="item.imgs.min">
+                            <img v-lazy="item.imgs.min" :ref="'flashsend' + item.id">
                         </div>
                         <div class="ProductDetails ">
                             <div class="product_name">{{item.name}}</div>
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </router-link>
                 </div>
             </div>
         </div>   
@@ -199,8 +199,26 @@ export default {
             if (this.userInfo.id) {
                 this.$store.dispatch('addProduct', pro)
                     .then(res => {
-                        this.$msg('提示', res.msg)
                         pro.num++
+                        /* 添加商品动画 */
+                        //点击图片的位置信息
+                        let pos = this.$refs['flashsend' + pro.id][0].getBoundingClientRect()
+                        //购物车数量标志的位置信息
+                        let cartPos = this.$store.state.cartPos
+                        let obj = {
+                            src: pro.imgs.min,
+                            width: pos.width,
+                            height: pos.height,
+                            start: {
+                                left: pos.left,
+                                top: pos.top
+                            },
+                            end: {
+                                left: cartPos.left,
+                                top: cartPos.top
+                            }
+                        }
+                        this.$addProduct(obj)
                     })
             } else {
                 //还未登录
@@ -217,7 +235,6 @@ export default {
                 if (pro.num > 0) {
                     this.$store.dispatch('subProduct', pro)
                         .then(res => {
-                            this.$msg('提示', res.msg)
                             pro.num--
                         })
                 }

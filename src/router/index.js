@@ -17,6 +17,8 @@ const SelectSite = resolve => require(['pages/selectSite/SelectSite.vue'], resol
 const EditSite = resolve => require(['pages/editSite/EditSite.vue'], resolve)
 //商品详情页
 const ProductItem = resolve => require(['pages/productItem/ProductItem.vue'], resolve)
+//商品收藏页
+const Favorite = resolve => require(['pages/favorite/Favorite.vue'], resolve)
 
 
 Vue.use(Router)
@@ -62,6 +64,10 @@ export default new Router({
         {
             path: '/product-item/:id',
             component: ProductItem
+        },
+        {
+            path: '/favorite',
+            component: Favorite
         }
     ]
 })

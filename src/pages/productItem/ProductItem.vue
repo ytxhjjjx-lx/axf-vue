@@ -1,6 +1,6 @@
 <template>
     <div class="wrap pro_item">
-        <header-gray back="true"/>
+        <header-gray :headerTitle="product.name"  back="true"/>
         <div class="main_content">
             <!-- 商品描述 -->
             <div class="wraper">
@@ -62,17 +62,26 @@ import HeaderGray from "@/components/header-gray/Header-gray"
 import api from "common/api"
 export default {
     activated() {
-        console.log(this.$route)
         let productId = this.$route.params.id
         //已登录
         if (this.userInfo.id) {
-            label: for (let i = 0; i < this.categories.length; i++) {
+            label: 
+            for (let i = 0; i < this.categories.length; i++) {
                 let products = this.categories[i].products
                 for (let j = 0; j < products.length; j++) {
                     if (products[j].id === Number(productId)) {
                         this.product = products[j]
                         break label
                     }
+                }
+            }
+            //判断是否已收藏
+            this.favoriteBol = false
+            let favorites = this.favorites
+            for (let i = 0; i < favorites.length; i++) {
+                if (favorites[i].product_id === Number(productId)) {
+                    //已收藏
+                    this.favoriteBol = true
                 }
             }
         } else {
@@ -103,6 +112,9 @@ export default {
         },
         cartCounts () {
             return this.$store.getters.cartCounts
+        },
+        favorites () {
+            return this.$store.state.favorites
         }
     },
      watch : {
@@ -116,7 +128,28 @@ export default {
     },
     methods: {
         favorite() {
-
+            if (this.userInfo.id) {
+                if (this.favoriteBol) {
+                    //已收藏
+                    this.$store.dispatch('cancelFavoriteProduct', this.product.id)
+                        .then(res => {
+                            this.favoriteBol = false
+                            this.$msg('提示', res.msg)
+                        })
+                } else {
+                    //未收藏
+                    this.$store.dispatch('favoriteProduct', this.product)
+                        .then(res => {
+                            this.favoriteBol = true
+                            this.$msg('提示', res.msg)
+                        })
+                }
+            } else {
+                this.$msg('提示', '请先登录')
+                .then(res => {
+                    this.$router.push('/login')
+                })
+            }
         },
         goToCart () {
             this.$router.push('/cart')

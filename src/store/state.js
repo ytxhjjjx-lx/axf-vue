@@ -4,8 +4,12 @@ export default {
     carts: [],
     //用户地址数据
     sites: [],
+    //用户收藏数据
+    favorites: [],
     //用户信息
-    userInfo: {},
+    userInfo: {
+        
+    },
     //购物车数量标志的位置信息
     cartPos: {},
     tabBarShow: true,

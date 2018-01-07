@@ -101,6 +101,8 @@ var data = new Mock.mock({
             "latitude": 32.064773
         }
     ],
+    //收藏列表
+    'favorites': []
 })
 
 fs.writeFile('db.json', JSON.stringify(data, null, 2), function () {

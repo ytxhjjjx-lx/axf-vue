@@ -17,6 +17,11 @@ export default {
                             .then(res => {
                                 commit('SAVE_SITES', res.data)
                             })
+                        //提取该用户收藏列表数据
+                        http.get(api.host + '/users/' + res.data[0].id + '/favorites')
+                        .then(res => {
+                            commit('SAVE_FAVORITES', res.data)
+                        })
                         // 保存用户个人信息
                         commit('LOGIN', res.data[0])
                         return {"msg": "登陆成功"} 
@@ -240,7 +245,7 @@ export default {
                     store.commit('UPDATE_SITE', res.data)
                 }
             })
-    }
+    },
     /* //删除地址
     deleteSite (store, id) {
         return http.delete(api.host + '/sites/' + id)
@@ -250,4 +255,59 @@ export default {
                 return {'msg': '删除成功'}
             })
     } */
+    cancelFavoriteProduct (store, id) {
+        let favorites = store.state.favorites
+        let favoriteId = 0
+        let index = 0
+        for (let i = 0; i < favorites.length; i++) {
+            if (favorites[i].product_id === id) {
+                index = i
+                favoriteId = favorites[i].id
+                break
+            }
+        }
+        return http.delete(api.host + '/favorites/' + favoriteId)
+                .then(res => {
+                    store.commit('CANCEL_FAVORITE', index)
+                    return {'msg': '已取消收藏'}
+                })
+    },
+    favoriteProduct (store, product) {
+        let productObj = {
+            userId: store.state.userInfo.id,
+            product_id: product.id,
+            img: product.imgs.min,
+            name: product.name,
+            unit: product.unit,
+            price: product.price
+        }
+        return http.post(api.host + '/favorites', productObj)
+                .then(res => {
+                    if (res.data.id) {
+                        store.commit('FAVORITE', res.data)
+                        return {'msg': '收藏成功'}
+                    }
+                })
+    },
+    deleteFavorites (store, favorites) {
+        function delFavoritesDone () {
+            let num = 0
+            return new Promise(function (resolve, reject) {
+                for (let i = 0; i < favorites.length; i++) {
+                    http.delete(api.host + '/favorites/' + favorites[i].id)
+                        .then(res => {
+                            num++
+                            if (num >= favorites.length) {
+                                resolve({'msg': '已取消收藏'})
+                            }   
+                        })
+                }
+            })
+        }
+        return delFavoritesDone()
+            .then(res => {
+                store.commit('DEL_FAVORITES', favorites)
+                return res
+            })
+    }
 }

@@ -26,6 +26,9 @@ export default {
     SAVE_SITES (state, sites) {
         state.sites = sites
     },
+    SAVE_FAVORITES (state, favorites) {
+        state.favorites = favorites
+    },
     ADD_PRODUCT (state, product) {
         state.carts.push(product)
     },
@@ -111,7 +114,7 @@ export default {
                 state.sites[i] = site
             }
         }
-    }
+    },
     /* DELETE_SITE (state, id) {
         for (let i=0; i<state.sites.length; i++) {
             if (state.sites[i].id === id) {
@@ -119,4 +122,20 @@ export default {
             }
         }
     } */
+    FAVORITE (state, obj) {
+        state.favorites.push(obj)
+    },
+    CANCEL_FAVORITE (state, index) {
+        state.favorites.splice(index, 1)
+    },
+    DEL_FAVORITES (state, favorites) {
+        for (let i = 0; i < favorites.length; i++) {
+            for (let j = 0; j < state.favorites.length; j++) {
+                if (favorites[i].id === state.favorites[j].product_id) {
+                    state.favorites.splice(j, 1)
+                    break
+                }
+            }
+        }
+    }
 }

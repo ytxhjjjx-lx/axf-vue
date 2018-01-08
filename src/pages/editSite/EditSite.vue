@@ -39,9 +39,11 @@
                         <tr class="spline-top">
                             <th>所在城市</th>
                             <td class="more">
-                                <select class="select-city" :value="selectedCity" @change="selectCity">
+                                <select class="select-city" v-model="selectedCity" @change="selectCity">
                                     <option value="">请选择城市</option>
-                                    <option v-for="(item,index) in citys" :key="item.city" :value="item.city">{{item.city}}</option>
+                                    <option v-for="(item,index) in citys" :key="item.city" :value="item.city">
+                                        {{item.city}}
+                                    </option>
                                 </select>
                             </td>
                         </tr>
@@ -74,25 +76,32 @@
 <script>
 import HeaderGray from '@/components/header-gray/Header-gray'
 import api from 'common/api'
+let pathname = ''
 export default {
+    //组件内导航守卫(实例创建之前调用)
+    beforeRouteEnter (to, from, next) {
+        // console.log(to, from)
+        pathname = from.path
+        next()
+    },
     created () {
+        let siteId = this.$route.params.id
+        let sites = this.sites
+        for (let i = 0; i < sites.length; i++) {
+            if (sites[i].id === Number(siteId)) {
+                this.city = sites[i].city
+            }
+        }
         this.$http.get(api.host + '/citys')
             .then(res => {
+                //先获取城市数据, 防止修改选中的城市但在下拉列表中找不到对应数据
                 this.citys = res.data
-                /* this.$store.commit('CHANGE_SELECTED_CITY', this.city)
-                let siteId = this.$route.params.id
-                let sites = this.sites
-                for (let i = 0; i < sites.length; i++) {
-                    if (sites[i].id === Number(siteId)) {
-                        this.city = sites[i].city
-                    }
-                } */
+                this.$store.commit('CHANGE_SELECTED_CITY', this.city)
             })
     },
     activated () {
         //接收传过来的地址
         this.siteId = this.$route.params.id
-        console.log(typeof this.siteId)
         let id = Number(this.$route.params.id)
         for (let i=0; i<this.sites.length; i++) {
             if (this.sites[i].id === id) {
@@ -100,15 +109,17 @@ export default {
                 this.sex = this.sites[i].sex
                 this.phone = this.sites[i].phone
                 this.detailSite = this.sites[i].detailSite
-                // this.city = this.sites[i].city
-                this.$store.commit('CHANGE_SELECTED_CITY', this.sites[i].city)
-                this.$store.commit('SAVE_SELECTED_SITE', {
-                    name: this.sites[i].site,
-                    location: {
-                        lng: this.sites[i].x,
-                        lat: this.sites[i].y
-                    }
-                })
+                //如果从地址列表页进入则获取相应数据
+                if (pathname !== '/select-site') {
+                    this.$store.commit('CHANGE_SELECTED_CITY', this.sites[i].city)
+                    this.$store.commit('SAVE_SELECTED_SITE', {
+                        name: this.sites[i].site,
+                        location: {
+                            lng: this.sites[i].x,
+                            lat: this.sites[i].y
+                        }
+                    })
+                }
             }
         }
     },
@@ -138,6 +149,12 @@ export default {
         },
         sites () {
             return this.$store.state.sites
+        },
+        selectedX () {
+            return this.$store.state.selectedX
+        },
+        selectedY () {
+            return this.$store.state.selectedY
         }
     },
     methods: {
@@ -179,12 +196,6 @@ export default {
                 this.$msg('提示', '请先选择城市')
             }
         }
-    },
-    deactivated () {
-        this.linkman = ''
-        this.phone = ''
-        this.detailSite = ''
-        this.sex = 0
     }
 }
 </script>

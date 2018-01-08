@@ -107,7 +107,7 @@
 <script>
 import HeaderGray from '@/components/header-gray/Header-gray'
 export default {
-    activated () {
+    created () {
         if (!this.userInfo.id) {
             this.$msg('提示', '请先登录!')
                 .then(res => {

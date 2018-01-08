@@ -169,8 +169,9 @@ export default {
             })
         }, 500),
         addSite (site) {
+            // console.log(site)
             this.$store.commit('SAVE_SELECTED_SITE', site)
-            this.$router.push('/add-site')
+            this.$router.go(-1)
         }
     },
     computed: {

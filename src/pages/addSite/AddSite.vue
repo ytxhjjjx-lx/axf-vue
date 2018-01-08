@@ -70,12 +70,27 @@
 <script>
 import HeaderGray from '@/components/header-gray/Header-gray'
 import api from 'common/api'
+let pathname = ''
 export default {
+    beforeRouteEnter (to, from, next) {
+        // console.log(to, from)
+        pathname = from.path
+        next()
+    },
     created () {
         this.$http.get(api.host + '/citys')
             .then(res => {
                 this.citys = res.data
             })
+    },
+    activated () {
+        //如果不是从选择地址页进入则清空信息
+        if (pathname !== '/select-site') {
+            this.linkman = ''
+            this.phone = ''
+            this.detailSite = ''
+            this.sex = 0
+        }
     },
     data () {
         return {
@@ -151,12 +166,6 @@ export default {
         selectedY () {
             return this.$store.state.selectedY
         }
-    },
-    deactivated () {
-        this.linkman = ''
-        this.phone = ''
-        this.detailSite = ''
-        this.sex = 0
     }
 }
 </script>

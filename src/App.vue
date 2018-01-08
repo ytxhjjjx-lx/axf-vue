@@ -2,8 +2,10 @@
     <div id="app">
         <!-- 缓存 -->
         <keep-alive>
-            <router-view></router-view>
+            <router-view v-if="!$route.meta.notkeepalive"></router-view>
         </keep-alive>
+        <!-- 设置不缓存的页面 -->
+        <router-view v-if="$route.meta.notkeepalive"></router-view>
         <tab-bar v-show="tabBarShow"/>
     </div>
 </template>

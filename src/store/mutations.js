@@ -98,10 +98,6 @@ export default {
             state.selectedY = site.location.lat
         }
     },
-    //所选地址名称
-    SAVE_SELECTED_SITENAME (state, name) {
-        state.selectedSite = name
-    },
     SAVE_SITE (state, site) {
         state.sites.push(site)
     },
@@ -115,13 +111,6 @@ export default {
             }
         }
     },
-    /* DELETE_SITE (state, id) {
-        for (let i=0; i<state.sites.length; i++) {
-            if (state.sites[i].id === id) {
-                state.sites.splice(i, 1)
-            }
-        }
-    } */
     FAVORITE (state, obj) {
         state.favorites.push(obj)
     },

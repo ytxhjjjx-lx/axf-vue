@@ -35,7 +35,11 @@ export default new Router({
         },
         {
             path: '/cart',
-            component: Cart
+            component: Cart,
+            meta:{
+                //不缓存
+                notkeepalive: true
+            }
         },
         {
             path: '/mine',
@@ -47,7 +51,10 @@ export default new Router({
         },
         {
             path: '/site',
-            component: Site
+            component: Site,
+            meta:{
+                notkeepalive: true
+            }
         },
         {
             path: '/add-site',

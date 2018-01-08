@@ -246,15 +246,6 @@ export default {
                 }
             })
     },
-    /* //删除地址
-    deleteSite (store, id) {
-        return http.delete(api.host + '/sites/' + id)
-            .then(res => {
-                 //console.log(res.data)  , 返回当前对象id
-                store.commit('DELETE_SITE', res.data)
-                return {'msg': '删除成功'}
-            })
-    } */
     cancelFavoriteProduct (store, id) {
         let favorites = store.state.favorites
         let favoriteId = 0

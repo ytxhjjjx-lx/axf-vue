@@ -117,7 +117,7 @@ export default {
             return this.$store.state.favorites
         }
     },
-     watch : {
+    watch: {
         //监听cartCounts的变化
         cartCounts () {
             this.tabBarActive = true

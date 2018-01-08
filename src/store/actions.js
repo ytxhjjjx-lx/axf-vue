@@ -297,6 +297,7 @@ export default {
         }
         return delFavoritesDone()
             .then(res => {
+                // console.log(favorites)
                 store.commit('DEL_FAVORITES', favorites)
                 return res
             })

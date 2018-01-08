@@ -122,6 +122,7 @@ export default {
             for (let j = 0; j < state.favorites.length; j++) {
                 if (favorites[i].id === state.favorites[j].product_id) {
                     state.favorites.splice(j, 1)
+                    // console.log(state.favorites)
                     break
                 }
             }

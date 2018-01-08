@@ -8252,15 +8252,6 @@
   "favorites": [
     {
       "userId": 1,
-      "product_id": 29,
-      "img": "http://dummyimage.com/80x80/f279a1&text=常军",
-      "name": "相几因几始",
-      "unit": 918,
-      "price": 78.7,
-      "id": 1
-    },
-    {
-      "userId": 1,
       "product_id": 16,
       "img": "http://dummyimage.com/80x80/f279d3&text=孔杰",
       "name": "反就建被",
@@ -8288,21 +8279,48 @@
     },
     {
       "userId": 2,
-      "product_id": 34,
-      "img": "http://dummyimage.com/80x80/f2d379&text=黄明",
-      "name": "市何全是包统种团政",
-      "unit": 418,
-      "price": 35.9,
-      "id": 5
-    },
-    {
-      "userId": 2,
       "product_id": 29,
       "img": "http://dummyimage.com/80x80/f279a1&text=常军",
       "name": "相几因几始",
       "unit": 918,
       "price": 78.7,
       "id": 6
+    },
+    {
+      "userId": 1,
+      "product_id": 140,
+      "img": "http://dummyimage.com/80x80/f2e479&text=黎强",
+      "name": "构矿过生领",
+      "unit": 311,
+      "price": 99.2,
+      "id": 13
+    },
+    {
+      "userId": 1,
+      "product_id": 19,
+      "img": "http://dummyimage.com/80x80/79b5f2&text=杨娟",
+      "name": "导查见越",
+      "unit": 337,
+      "price": 46.8,
+      "id": 15
+    },
+    {
+      "userId": 1,
+      "product_id": 1,
+      "img": "http://dummyimage.com/80x80/79f27a&text=谭静",
+      "name": "林该史定象思样",
+      "unit": 454,
+      "price": 59.2,
+      "id": 16
+    },
+    {
+      "userId": 1,
+      "product_id": 22,
+      "img": "http://dummyimage.com/80x80/97f279&text=范静",
+      "name": "百科身立阶就周候治难",
+      "unit": 180,
+      "price": 11.3,
+      "id": 17
     }
   ]
 }

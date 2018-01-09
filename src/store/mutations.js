@@ -120,9 +120,8 @@ export default {
     DEL_FAVORITES (state, favorites) {
         for (let i = 0; i < favorites.length; i++) {
             for (let j = 0; j < state.favorites.length; j++) {
-                if (favorites[i].id === state.favorites[j].product_id) {
+                if (favorites[i].product_id === state.favorites[j].product_id) {
                     state.favorites.splice(j, 1)
-                    // console.log(state.favorites)
                     break
                 }
             }

@@ -12,7 +12,7 @@
             </router-link>
             <div class="split"></div>
             <div class="shopFavorite item">
-                <span class="inner">商品收藏</span>
+                <span class="inner">店铺收藏</span>
             </div>
         </div>
         <!-- 订单主体 -->

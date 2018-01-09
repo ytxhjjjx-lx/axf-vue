@@ -34,6 +34,9 @@ Vue.prototype.$msg = MessageBox
 //引入自定义插件
 import addProduct from '@/plugins'
 Vue.use(addProduct)
+// 引入fastclick
+import fastclick from 'fastclick'
+fastclick.attach(document.body)
 
 
 // 引入axios

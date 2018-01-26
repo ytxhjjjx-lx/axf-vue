@@ -18,4 +18,13 @@ npm run build
 npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## run project
+git clone git@github.com:ytxhjjjx-lx/store.git
+
+cnpm i
+
+npm run dev
+
+npm run db  启动json-server服务器
+
+open http://localhost:8080/

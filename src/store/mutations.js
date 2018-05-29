@@ -126,5 +126,9 @@ export default {
                 }
             }
         }
+    },
+    //注销
+    LOGOUT (state, obj) {
+        state.userInfo = obj
     }
 }

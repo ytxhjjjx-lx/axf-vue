@@ -5,7 +5,7 @@ export default {
     login ({commit}, userObj) {
         return http.get(api.host + '/users?phone=' + userObj.phone)
                 .then(res => {
-                    //登录
+                    //登录成功提取用户数据
                     if (res.data.length > 0) {
                         //提取该用户购物车数据(使用关系图谱获取下级资源)
                         http.get(api.host + '/users/' + res.data[0].id + '/carts')
@@ -28,15 +28,15 @@ export default {
                     } else {
                         //注册
                         return http.post(api.host + '/users', userObj)
-                                .then(res => {
-                                    if (res.data.id > 0) {
-                                        // 注册成功, 保存用户信息
-                                        commit('LOGIN', res.data)
-                                        return { "msg": "注册成功" }
-                                    } else {
-                                        return { "msg": "注册失败" }
-                                    }
-                                })
+                            .then(res => {
+                                if (res.data.id > 0) {
+                                    // 注册成功, 保存用户信息
+                                    commit('LOGIN', res.data)
+                                    return { "msg": "注册成功" }
+                                } else {
+                                    return { "msg": "注册失败" }
+                                }
+                            })
                     }
                 })
     },
@@ -301,5 +301,13 @@ export default {
                 store.commit('DEL_FAVORITES', favorites)
                 return res
             })
+    },
+    //注销
+    logout (store, obj) {
+        store.commit("LOGOUT", obj)
+        store.commit('SAVE_CARTS', {})
+        store.commit('SAVE_SITES', {})
+        store.commit('SAVE_FAVORITES', {})
+        return { "msg": "注销成功" }
     }
 }

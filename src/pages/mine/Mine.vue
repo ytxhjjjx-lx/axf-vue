@@ -2,7 +2,7 @@
     <div class="mine">
         <div class="userinfo">
             <div class="user">
-                <p class="user-phone">15779289473</p>
+                <p class="user-phone">{{phone}}</p>
                 <p class="user-level">V0</p>
             </div>
         </div>
@@ -63,12 +63,52 @@
                     <span>关于我们</span>
                 </div>
             </div>
-            <div class="unlogin">
+            <div class="unlogin" @click="logout">
                 退出当前账号
             </div>
         </div>
     </div>
 </template>
+<script>
+export default {
+    data () {
+        return {
+            phone: '未登录'
+        }
+    },
+    created () {
+        if (this.userInfo.id) {
+            this.phone = this.userInfo.phone
+        }
+    },
+    activated () {
+        if (this.userInfo.id) {
+            this.phone = this.userInfo.phone
+        } else {
+            this.phone = "未登录"
+        }
+    },
+    computed: {
+        userInfo () {
+            return this.$store.state.userInfo
+        }
+    },
+    methods: {
+        logout () {
+             this.$store.dispatch('logout', {})
+                .then(res => {
+                    return this.$msg('提示', res.msg)
+                })
+                .then(res => {
+                    // 注销成功会跳转到首页
+                    this.$router.push('/')
+                    console.log(this.userInfo)
+                })
+        }
+    }
+}
+</script>
+
 <style lang="less" scoped>
 .mine{
     font-size: 1.4rem;

@@ -123,6 +123,16 @@ export default {
             }
         }
     },
+    activated () {
+        if (!this.userInfo.id) {
+            this.$msg('提示', '请先登录!')
+                .then(res => {
+                    this.$router.push('/login')
+                })
+        } else {
+            
+        }
+    },
     components: {
         HeaderGray
     },

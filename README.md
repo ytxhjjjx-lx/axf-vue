@@ -25,7 +25,7 @@ cnpm i
 
 npm run dev
 
-npm run db  启动json-server服务器
+npm run db  启动json-server服务器(这里提供了一些测试数据,当然也可以自行创建一个空db.json文件,使用node mock.js命令自行生成测试用数据)
 
 open http://localhost:8080/
 

@@ -4,7 +4,7 @@
         <keep-alive>
             <router-view v-if="!$route.meta.notkeepalive"></router-view>
         </keep-alive>
-        <!-- 设置不缓存的页面 -->
+        <!-- 设置不缓存的页面，该应用路由配置文件中已设置购物车页和地址列表页为不缓存状态 -->
         <router-view v-if="$route.meta.notkeepalive"></router-view>
         <tab-bar v-show="tabBarShow"/>
     </div>

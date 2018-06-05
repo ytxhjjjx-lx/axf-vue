@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <!-- 缓存 -->
+        <!-- 缓存，缓存会保留组件的状态，若组件需要不断地重新渲染则不建议设置缓存，组件默认为缓存状态 -->
         <keep-alive>
             <router-view v-if="!$route.meta.notkeepalive"></router-view>
         </keep-alive>
